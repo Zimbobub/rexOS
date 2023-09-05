@@ -1,1 +1,3 @@
-build/
+build/*
+cross-compiler/build/*
+cross-compiler/src/*
