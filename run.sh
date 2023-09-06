@@ -8,7 +8,7 @@ gcc -ffreestanding -m32 -g -c "src/kernel/kernel.c" -o "build/fragments/kernel.o
 nasm "src/zeroes.asm" -f bin -o "build/fragments/zeroes.bin"
 
 # link
-i386-elf-ld -o "build/fragments/full_kernel.bin" -Ttext 0x1000 "build/fragments/kernel_entry.o" "build/fragments/kernel.o" --oformat binary
+i386-elf-ld -o "build/fragments/full_kernel.bin" -Ttext 0x1000 "build/fragments/kernel_entry.o" "build/fragments/kernel.o" --oformat binary --ignore-unresolved-symbol _GLOBAL_OFFSET_TABLE_
 
 # concatenate into a single binary
 cat "build/fragments/boot.bin" "build/fragments/full_kernel.bin" "build/fragments/zeroes.bin"  > "build/OS.bin"
