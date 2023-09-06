@@ -39,7 +39,7 @@ or eax, 1
 mov cr0, eax
 jmp CODE_SEG:start_protected_mode
 
-# hang if we somehow get here
+; hang if we somehow get here
 jmp $
                                     
 BOOT_DISK: db 0
