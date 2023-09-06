@@ -1,4 +1,2 @@
-build/*
-cross-compiler/build/*
-cross-compiler/src/*
+build/
 tools/git.sh
