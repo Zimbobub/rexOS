@@ -2,7 +2,7 @@
 export PATH=$PATH:/usr/local/i386elfgcc/bin
 
 # compile
-nasm "src/bootloader/boot.asm" -f bin -o "build/fragments/boot.bin"
+nasm "src/boot/boot.asm" -f bin -o "build/fragments/boot.bin"
 nasm "src/kernel/init.asm" -f elf -o "build/fragments/kernel_entry.o"
 gcc -ffreestanding -m32 -g -c "src/kernel/kernel.c" -o "build/fragments/kernel.o"
 nasm "src/zeroes.asm" -f bin -o "build/fragments/zeroes.bin"
