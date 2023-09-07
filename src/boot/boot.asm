@@ -1,12 +1,17 @@
 [bits 16]
 [org 0x7c00]
 KERNEL_LOCATION equ 0x1000
-                                    
+
+; lets us know weve made it to the bootloader
+mov ah, 0x0
+mov al, 0x3
+int 0x10                ; text mode (clears screen)
+
 
 mov [BOOT_DISK], dl
 
-                                    
-xor ax, ax                          
+
+xor ax, ax
 mov es, ax
 mov ds, ax
 mov bp, 0x8000
@@ -23,12 +28,8 @@ mov cl, 0x02
 mov dl, [BOOT_DISK]
 int 0x13                ; no error management
 
-                                    
-mov ah, 0x0
-mov al, 0x3
-int 0x10                ; text mode (clears screen)
 
-
+; start moving toward 32 bits
 CODE_SEG equ GDT_code - GDT_start
 DATA_SEG equ GDT_data - GDT_start
 
@@ -87,6 +88,8 @@ start_protected_mode:
     jmp KERNEL_LOCATION
 
                                      
- 
+; sanity check bytes (will appear as "ww")
+dw 0x7777
+; fill rest of bootsector in and add signature
 times 510-($-$$) db 0              
 dw 0xaa55
