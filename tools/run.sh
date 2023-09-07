@@ -15,7 +15,7 @@ for filename in src/kernel/*.c; do
 done
 # c files nested in dirs
 for filename in src/kernel/*/*.c; do
-    gcc -ffreestanding -m32 -g -c $filename -o "build/objects/$(basename $(dirname $filename))/$(basename ${filename%.c}).o"
+    gcc -ffreestanding -m32 -g -c $filename -o "build/objects/$(basename $(dirname $filename))_$(basename ${filename%.c}).o"
 done
 
 
