@@ -5,7 +5,6 @@
 
 
 
-
 // read from an i/o port (1 byte)
 uint8_t inb(uint16_t port) {
     uint8_t rv;
@@ -17,8 +16,6 @@ uint8_t inb(uint16_t port) {
 void outb(uint16_t port, uint8_t data) {
     asm volatile ("outb %1, %0" : : "dN" (port), "a" (data));
 }
-
-
 
 int serialInit() {
     outb(PORT + 1, 0x00);    // Disable all interrupts
