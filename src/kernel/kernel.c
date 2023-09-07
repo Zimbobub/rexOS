@@ -3,12 +3,24 @@
 
 
 extern void main(void) {
-    VGAPutCharAt('C', 1, 1, VGA_COLOR_BLACK, VGA_COLOR_WHITE);
-
     serialInit();
 
-    char* message = "Hello";
-    serialSendString(message);
+    // terminal cursor position
+    size_t row = 0;
+    size_t col = 0;
 
+
+    while (1) {
+        if (serialReceived()) {
+            char c = serialReadByte();
+            VGAPutCharAt(c, row, col, VGA_COLOR_BLACK, VGA_COLOR_WHITE);
+            col++;
+            if (col == VGA_COLS) {
+                row++;
+                col = 0;
+            }
+        }
+    }
+    
     return;
 }

@@ -28,4 +28,4 @@ i386-elf-ld -o "build/objects/full_kernel.bin" -Ttext 0x1000 build/objects/*.o -
 cat "build/objects/boot.bin" "build/objects/full_kernel.bin" "build/objects/zeroes.bin"  > "build/OS.bin"
 
 # run
-qemu-system-x86_64 -drive format=raw,file="build/OS.bin",index=0,if=floppy, -m 128M
+qemu-system-x86_64 -drive format=raw,file="build/OS.bin",index=0,if=floppy, -m 128M -serial stdio
