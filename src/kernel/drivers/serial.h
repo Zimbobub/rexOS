@@ -1,5 +1,4 @@
-#ifndef SERIAL_H
-#define SERIAL_H
+#pragma once
 
 #include <stdint.h>
 
@@ -26,5 +25,3 @@ uint8_t serialIsTransmitReady();
 void serialSendByte(char message);
 
 void serialSendString(char* message);
-
-#endif
