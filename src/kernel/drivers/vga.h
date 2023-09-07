@@ -8,7 +8,7 @@
 #define VGA_ROWS 25
 #define VGA_COLS 80
 
-/* text mode colors */
+// text mode colors
 enum VGAColor {
     VGA_COLOR_BLACK = 0,
     VGA_COLOR_BLUE = 1,
