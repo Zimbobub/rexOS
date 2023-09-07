@@ -9,6 +9,7 @@ mkdir ./build/objects
 nasm "src/boot/boot.asm" -f bin -o "build/objects/boot.bin"
 nasm "src/boot/kernel_entry.asm" -f elf -o "build/objects/kernel_entry.o"
 nasm "src/zeroes.asm" -f bin -o "build/objects/zeroes.bin"
+
 # compile kernel
 for filename in src/kernel/*.c; do
     gcc -ffreestanding -m32 -g -c $filename -o "build/objects/$(basename ${filename%.c}).o"
