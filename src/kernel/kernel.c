@@ -13,12 +13,13 @@ extern void main(void) {
     while (1) {
         if (serialReceived()) {
             char c = serialReadByte();
-            VGAPutCharAt(c, row, col, VGA_COLOR_BLACK, VGA_COLOR_WHITE);
-            col++;
-            if (col == VGA_COLS) {
-                row++;
-                col = 0;
-            }
+            serialSendByte(c);
+            // VGAPutCharAt(c, row, col, VGA_COLOR_BLACK, VGA_COLOR_WHITE);
+            // col++;
+            // if (col == VGA_COLS) {
+            //     row++;
+            //     col = 0;
+            // }
         }
     }
     
