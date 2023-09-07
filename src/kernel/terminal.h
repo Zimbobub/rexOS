@@ -32,8 +32,8 @@ typedef struct {
     uint8_t rows;
     uint8_t cols;
 
-    size_t currentRow;
-    size_t currentCol;
+    uint8_t currentRow;
+    uint8_t currentCol;
 
     uint16_t* buffer;
     uint8_t foregroundColor;
