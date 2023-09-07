@@ -1,7 +1,7 @@
 #include "serial.h"
 
 #include <stdint.h>
-
+#include "../stdlib/string.h"
 
 
 
@@ -20,7 +20,7 @@ void outb(uint16_t port, uint8_t data) {
 
 
 
-static int init_serial() {
+int serialInit() {
     outb(PORT + 1, 0x00);    // Disable all interrupts
     outb(PORT + 3, 0x80);    // Enable DLAB (set baud rate divisor)
     outb(PORT + 0, 0x03);    // Set divisor to 3 (lo byte) 38400 baud
@@ -43,23 +43,30 @@ static int init_serial() {
 }
 
 
-// receiving data
-int serial_received() {
+// checks if we have received anything
+uint8_t serialReceived() {
     return inb(PORT + 5) & 1;
 }
-char read_serial() {
-    while (serial_received() == 0);
+// reads the received message
+uint8_t serialReadByte() {
+    while (serialReceived() == 0);
  
     return inb(PORT);
 }
 
-// sending data
-uint8_t is_transmit_empty() {
+// checks if we can send a message
+uint8_t serialIsTransmitReady() {
     return inb(PORT + 5) & 0x20;
 }
+// sends a single byte (once ready)
+void serialSendByte(char message) {
+    while (serialIsTransmitReady() == 0);
  
-void write_serial(uint8_t a) {
-    while (is_transmit_empty() == 0);
- 
-    outb(PORT, a);
+    outb(PORT, message);
+}
+
+void serialSendString(char* message) {
+    for (size_t i = 0; i < strlen(message); i++) {
+        serialSendByte(message[i]);
+    }
 }

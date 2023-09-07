@@ -7,23 +7,21 @@
 #define PORT 0x3f8          // COM1
 
 
-// read from an i/o port (1 byte)
-uint8_t inb(uint16_t port);
-
-// write to an i/o port (1 byte)
-void outb(uint16_t port, uint8_t data);
 
 
-static int init_serial();
+int serialInit();
 
 
-// receiving data
-int serial_received();
-char read_serial();
+// checks if we have received anything
+uint8_t serialReceived();
+// reads the received message
+uint8_t serialReadByte();
 
-// sending data
-uint8_t is_transmit_empty();
-void write_serial(uint8_t a);
+// checks if we can send a message
+uint8_t serialIsTransmitReady();
+// sends a single byte (once ready)
+void serialSendByte(char message);
 
+void serialSendString(char* message);
 
 #endif
