@@ -1,4 +1,3 @@
-#include "terminal.h"
 #include "drivers/vga.h"
 
 
