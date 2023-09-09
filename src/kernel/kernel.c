@@ -2,7 +2,7 @@
 #include "drivers/serial.h"
 
 
-extern void main(void) {
+extern void kernelMain(void) {
     serialInit();
 
     // terminal cursor position
@@ -23,5 +23,5 @@ extern void main(void) {
         }
     }
     
-    return;
+    for (;;);
 }

@@ -1,31 +1,58 @@
 # add cross compiler to path just for this script
 export PATH=$PATH:/usr/local/i386elfgcc/bin
 
+
+# directories used
+SRC_DIR="./src"
+BOOT_STAGE1_DIR="$SRC_DIR/boot/stage1"
+BOOT_STAGE2_DIR="$SRC_DIR/boot/stage2"
+KERNEL_DIR="$SRC_DIR/kernel"
+
+BUILD_DIR="./build"
+BIN_DIR="$BUILD_DIR/bin"
+OBJ_DIR="$BUILD_DIR/obj"
+OUTPUT_FILE="$BUILD_DIR/OS.bin"
+
+
 # format build dir
-rm -r ./build/*
-mkdir ./build/objects
+rm -r $BUILD_DIR/*
+mkdir $BIN_DIR
+mkdir $OBJ_DIR
 
-# compile asm
-nasm "src/boot/stage1/boot.asm" -f bin -o "build/objects/boot.bin"
-nasm "src/boot/stage1/kernel_entry.asm" -f elf -o "build/objects/kernel_entry.o"
-nasm "src/zeroes.asm" -f bin -o "build/objects/zeroes.bin"
 
-# compile kernel
+# BOOTLOADER STAGE 1
+nasm "$BOOT_STAGE1_DIR/boot.asm" -f bin -o "$BIN_DIR/boot.bin"
+nasm "$BOOT_STAGE1_DIR/kernel_entry.asm" -f elf -o "$OBJ_DIR/kernel_entry.o"
+
+
+# BOOTLOADER STAGE 2
+for filename in src/boot/stage2/*.c; do
+    gcc -ffreestanding -m32 -g -c $filename -o "$OBJ_DIR/$(basename ${filename%.c}).o"
+done
+
+
+# KERNEL
 for filename in src/kernel/*.c; do
-    gcc -ffreestanding -m32 -g -c $filename -o "build/objects/$(basename ${filename%.c}).o"
+    gcc -ffreestanding -m32 -g -c $filename -o "$OBJ_DIR/$(basename ${filename%.c}).o"
 done
 # c files nested in dirs
 for filename in src/kernel/*/*.c; do
-    # gcc -ffreestanding -m32 -g -c $filename -o "build/objects/$(basename $(dirname $filename))_$(basename ${filename%.c}).o"
-    gcc -ffreestanding -m32 -g -c $filename -o "build/objects/$(basename ${filename%.c}).o"
+    # gcc -ffreestanding -m32 -g -c $filename -o "$OBJ_DIR/$(basename $(dirname $filename))_$(basename ${filename%.c}).o"
+    gcc -ffreestanding -m32 -g -c $filename -o "$OBJ_DIR/$(basename ${filename%.c}).o"
 done
 
 
 # link
-i386-elf-ld -o "build/objects/full_kernel.bin" -Ttext 0x1000 build/objects/*.o --oformat binary --ignore-unresolved-symbol _GLOBAL_OFFSET_TABLE_
+i386-elf-ld -o "$BIN_DIR/kernel.bin" -Ttext 0x1000 $OBJ_DIR/*.o --oformat binary --ignore-unresolved-symbol _GLOBAL_OFFSET_TABLE_
+
+
+# pad with zeroes
+nasm "$SRC_DIR/zeroes.asm" -f bin -o "$BIN_DIR/zeroes.bin"
+
 
 # concatenate into a single binary
-cat "build/objects/boot.bin" "build/objects/full_kernel.bin" "build/objects/zeroes.bin"  > "build/OS.bin"
+cat "$BIN_DIR/boot.bin" "$BIN_DIR/kernel.bin" "$BIN_DIR/zeroes.bin"  > "$OUTPUT_FILE"
+
 
 # run
-qemu-system-x86_64 -drive format=raw,file="build/OS.bin",index=0,if=floppy, -m 128M -serial stdio
+qemu-system-x86_64 -drive format=raw,file="$OUTPUT_FILE",index=0,if=floppy, -m 128M -serial stdio
