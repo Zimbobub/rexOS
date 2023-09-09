@@ -6,8 +6,8 @@ rm -r ./build/*
 mkdir ./build/objects
 
 # compile asm
-nasm "src/boot/boot.asm" -f bin -o "build/objects/boot.bin"
-nasm "src/boot/kernel_entry.asm" -f elf -o "build/objects/kernel_entry.o"
+nasm "src/boot/stage1/boot.asm" -f bin -o "build/objects/boot.bin"
+nasm "src/boot/stage1/kernel_entry.asm" -f elf -o "build/objects/kernel_entry.o"
 nasm "src/zeroes.asm" -f bin -o "build/objects/zeroes.bin"
 
 # compile kernel
