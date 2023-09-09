@@ -22,7 +22,7 @@ mkdir $OBJ_DIR
 
 # BOOTLOADER STAGE 1
 nasm "$BOOT_STAGE1_DIR/boot.asm" -f bin -o "$BIN_DIR/boot.bin"
-nasm "$BOOT_STAGE1_DIR/kernel_entry.asm" -f elf -o "$OBJ_DIR/kernel_entry.o"
+nasm "$BOOT_STAGE1_DIR/enter_stage2.asm" -f elf -o "$OBJ_DIR/enter_stage2.o"
 
 
 # BOOTLOADER STAGE 2

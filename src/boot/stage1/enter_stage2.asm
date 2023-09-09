@@ -3,6 +3,6 @@ global _start
 
 _start:
     [bits 32]
-    [extern kernelMain]
-    call kernelMain
+    [extern bootloaderStage2]
+    call bootloaderStage2
     jmp $
