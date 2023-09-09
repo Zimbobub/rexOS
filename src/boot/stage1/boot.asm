@@ -1,6 +1,6 @@
 [bits 16]
 [org 0x7c00]
-KERNEL_LOCATION equ 0x1000
+STAGE2_LOCATION equ 0x1000
 
 ; lets us know weve made it to the bootloader
 mov ah, 0x0
@@ -17,7 +17,7 @@ mov ds, ax
 mov bp, 0x8000
 mov sp, bp
 
-mov bx, KERNEL_LOCATION
+mov bx, STAGE2_LOCATION
 mov dh, 2
 
 mov ah, 0x02
@@ -85,7 +85,7 @@ start_protected_mode:
 	mov ebp, 0x90000		; 32 bit stack base pointer
 	mov esp, ebp
 
-    jmp KERNEL_LOCATION
+    jmp STAGE2_LOCATION
 
                                      
 ; sanity check bytes (will appear as "ww")
